@@ -1,0 +1,20 @@
+import yfinance as yf
+import altair as alt
+import pandas as pd
+
+data = yf.download('IXI.L', period='5y')
+
+data.loc[pd.datetime(2019, 12, 18)].Close
+
+price = alt.Chart(data.reset_index()).mark_line().encode(
+x = 'Date:T',
+y = 'Close',
+tooltip=['Date', 'Open', 'Close', 'High', 'Low', 'Volume'],
+).properties(width=600, height=200)
+
+volume = alt.Chart(data.reset_index()).mark_line().encode(
+x = 'yearmonth(Date):T',
+y = 'mean(Volume)').properties(width = 600, height = 200)
+
+price & volume
+
